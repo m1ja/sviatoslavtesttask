@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Tegro Plugin
  * Description: Плагин для интеграции Tegro с WooCommerce.
  * Version: 1.0
- * Author: Ваше имя
+ * Author: Коваленко Михаил
  */
 
 // Регистрация метода оплаты в WooCommerce
@@ -16,11 +16,25 @@ function add_tegro_payment_gateway($gateways)
 
 // Класс для обработки оплаты через Tegro
 require_once( ABSPATH . 'wp-content/plugins/woocommerce/includes/abstracts/abstract-wc-payment-gateway.php' );
-require_once( ABSPATH . 'wp-content/plugins/woocommerce/includes/abstracts/abstract-wc-settings-api.php');////
+require_once( ABSPATH . 'wp-content/plugins/woocommerce/includes/abstracts/abstract-wc-settings-api.php');
 
 class WC_Tegro_Payment_Gateway extends WC_Payment_Gateway
 {
 
+    public function __construct()
+    {
+        $this->id = 'tegro_payment_gateway';
+        $this->method_title = 'Tegro Payment Gateway';
+        $this->method_description = 'Оплата через Tegro API';
+        $this->has_fields = false;
+        $this->init_form_fields();
+        $this->init_settings();
+
+        $this->title = $this->get_option('title');
+        $this->description = $this->get_option('description');
+
+        add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
+    }
     public function init_form_fields()
     {
         $this->form_fields = array(
@@ -46,35 +60,35 @@ class WC_Tegro_Payment_Gateway extends WC_Payment_Gateway
         );
     }
     
-    public function process_payment($order_id) {
+    public function process_payment($order_id){
+        $order = wc_get_order($order_id);
+        $shop_id = 'your shop_id'; //Замените на свой Shop_id
+        $amount = $order->get_total();
+        $currency = get_woocommerce_currency();
+        $order_id = $order->get_id();
+        $secret = 'your secret_key'; //замените на свой secret key
 
-        // Получите значения параметров
-        $secret = 'NxZ5unqL';
-
-        // Формирование данных для передачи в Tegro API
+        // Формируем данные для создания подписи
         $data = array(
-            'shop_id' => '701957D56DF375A68261AB2387849DD6',
-            'amount' => 100,
-            'currency' => 'RUB',
-            'order_id' => 123,
+            'shop_id' => $shop_id,
+            'amount' => $amount,
+            'currency' => $currency,
+            'order_id' => $order_id,
+            //'test'=> 1,
         );
-
-        // Сортировка параметров по алфавитному порядку ключей
         ksort($data);
+        $str = http_build_query($data);
+        $sign = md5($str . $secret);
 
-        // Формирование строки параметров
-        $query_string = http_build_query($data);
+        // Формируем ссылку для оплаты
+        $payment_url = "https://tegro.money/pay?{$str}&sign={$sign}";
 
-        // Формирование подписи (sign)
-        $sign = md5($query_string . $secret);
-
-        // Формирование ссылки для оплаты
-        $payment_url = "https://tegro.money/pay?{$query_string}&sign={$sign}";
-
-        // Перенаправление пользователя на страницу оплаты
+        // Перенаправляем пользователя на страницу оплаты
         return array(
             'result' => 'success',
-            'redirect' => $payment_url
+            'redirect' => $payment_url,
         );
     }
+    
+    
 }
