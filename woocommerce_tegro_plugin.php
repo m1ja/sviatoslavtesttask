@@ -62,11 +62,11 @@ class WC_Tegro_Payment_Gateway extends WC_Payment_Gateway
     
     public function process_payment($order_id){
         $order = wc_get_order($order_id);
-        $shop_id = 'your shop_id'; //Замените на свой Shop_id
+        $shop_id = get_option('tegro_shop_id'); // Получаем из настроек WordPress
         $amount = $order->get_total();
         $currency = get_woocommerce_currency();
         $order_id = $order->get_id();
-        $secret = 'your secret_key'; //замените на свой secret key
+        $secret = get_option('tegro_secret_key'); // Получаем из настроек WordPress
 
         // Формируем данные для создания подписи
         $data = array(
@@ -88,7 +88,6 @@ class WC_Tegro_Payment_Gateway extends WC_Payment_Gateway
             'result' => 'success',
             'redirect' => $payment_url,
         );
-    }
-    
-    
+    } 
 }
+
