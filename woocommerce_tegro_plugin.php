@@ -15,8 +15,8 @@ function add_tegro_payment_gateway($gateways)
 }
 
 // Класс для обработки оплаты через Tegro
-require_once( ABSPATH . 'wp-content/plugins/woocommerce/includes/abstracts/abstract-wc-payment-gateway.php' );
-require_once( ABSPATH . 'wp-content/plugins/woocommerce/includes/abstracts/abstract-wc-settings-api.php');
+require_once(ABSPATH . 'wp-content/plugins/woocommerce/includes/abstracts/abstract-wc-payment-gateway.php');
+require_once(ABSPATH . 'wp-content/plugins/woocommerce/includes/abstracts/abstract-wc-settings-api.php');
 
 class WC_Tegro_Payment_Gateway extends WC_Payment_Gateway
 {
@@ -35,6 +35,7 @@ class WC_Tegro_Payment_Gateway extends WC_Payment_Gateway
 
         add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
     }
+    
     public function init_form_fields()
     {
         $this->form_fields = array(
@@ -59,14 +60,14 @@ class WC_Tegro_Payment_Gateway extends WC_Payment_Gateway
             )
         );
     }
-    
-    public function process_payment($order_id){
+
+    public function process_payment($order_id)
+    {
         $order = wc_get_order($order_id);
-        $shop_id = 'your shop_id'; //Замените на свой Shop_id
+        $shop_id = '701957D56DF375A68261AB2387849DD6'; //Замените на свой Shop_id
         $amount = $order->get_total();
         $currency = get_woocommerce_currency();
         $order_id = $order->get_id();
-        $secret = 'your secret_key'; //замените на свой secret key
 
         // Формируем данные для создания подписи
         $data = array(
@@ -74,21 +75,30 @@ class WC_Tegro_Payment_Gateway extends WC_Payment_Gateway
             'amount' => $amount,
             'currency' => $currency,
             'order_id' => $order_id,
-            //'test'=> 1,
+            'test'=> 1,
         );
         ksort($data);
         $str = http_build_query($data);
         $sign = md5($str . $secret);
 
-        // Формируем ссылку для оплаты
-        $payment_url = "https://tegro.money/pay?{$str}&sign={$sign}";
-
-        // Перенаправляем пользователя на страницу оплаты
-        return array(
-            'result' => 'success',
-            'redirect' => $payment_url,
-        );
+        // Выполняем запрос к Python-скрипту, чтобы получить ссылку
+        $script_path = '/home/c/cd09136/wordpress_0gnxo/public_html/wp-content/plugins/tegro-plugin.py'; // Замените на путь к вашему Python-скрипту
+        $command = escapeshellcmd("python3 {$script_path} {$str}");
+        $payment_url = shell_exec($command);
+        // Проверяем, удалось ли получить ссылку
+        if ($payment_url) {
+            // Перенаправляем пользователя на страницу оплаты
+            WC()->cart->empty_cart();
+            return array(
+                'result' => 'success',
+                'redirect' => $payment_url,
+            );
+        } else {
+            // Обработка ошибки, если не удалось получить ссылку
+            wc_add_notice('Произошла ошибка при создании ссылки для оплаты. Пожалуйста, попробуйте еще раз.', 'error');
+            return;
+        }
+        
     }
-    
-    
 }
+
