@@ -16,7 +16,7 @@ if __name__ == '__main__':
     data = dict(item.split('=') for item in str_data.split('&'))
 
     # Проверка подписи
-    secret = 'NxZ5unqL'  # Замените на свой secret key
+    secret = 'your_secret_key'  # Замените на свой secret key
     sorted_data = sorted(data.items())
     data_string = urlencode(sorted_data)
     sign = hashlib.md5((data_string + secret).encode()).hexdigest()

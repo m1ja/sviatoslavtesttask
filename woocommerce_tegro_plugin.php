@@ -64,7 +64,7 @@ class WC_Tegro_Payment_Gateway extends WC_Payment_Gateway
     public function process_payment($order_id)
     {
         $order = wc_get_order($order_id);
-        $shop_id = '701957D56DF375A68261AB2387849DD6'; //Замените на свой Shop_id
+        $shop_id = 'your shop_id'; //Замените на свой Shop_id
         $amount = $order->get_total();
         $currency = get_woocommerce_currency();
         $order_id = $order->get_id();
@@ -85,6 +85,7 @@ class WC_Tegro_Payment_Gateway extends WC_Payment_Gateway
         $script_path = '/home/c/cd09136/wordpress_0gnxo/public_html/wp-content/plugins/tegro-plugin.py'; // Замените на путь к вашему Python-скрипту
         $command = escapeshellcmd("python3 {$script_path} {$str}");
         $payment_url = shell_exec($command);
+
         // Проверяем, удалось ли получить ссылку
         if ($payment_url) {
             // Перенаправляем пользователя на страницу оплаты
