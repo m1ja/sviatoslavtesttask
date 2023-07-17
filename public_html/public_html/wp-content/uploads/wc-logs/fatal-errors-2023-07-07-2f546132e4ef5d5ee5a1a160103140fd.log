@@ -1,0 +1,12 @@
+2023-07-07T20:51:23+00:00 CRITICAL require_once(): Failed opening required '/home/c/cd09136/wordpress_0gnxo/public_html/wp-content\plugins\woocommerce\includes\abstracts\abstract-wc-settings-api.php' (include_path='.:/opt/php74/share/pear') в /home/c/cd09136/wordpress_0gnxo/public_html/wp-content/plugins/Tegro Plugin/woocommerce_tegro_plugin.php на строке 20
+
+2023-07-07T20:51:24+00:00 CRITICAL require_once(): Failed opening required '/home/c/cd09136/wordpress_0gnxo/public_html/wp-content\plugins\woocommerce\includes\abstracts\abstract-wc-settings-api.php' (include_path='.:/opt/php74/share/pear') в /home/c/cd09136/wordpress_0gnxo/public_html/wp-content/plugins/Tegro Plugin/woocommerce_tegro_plugin.php на строке 20
+
+2023-07-07T20:51:25+00:00 CRITICAL require_once(): Failed opening required '/home/c/cd09136/wordpress_0gnxo/public_html/wp-content\plugins\woocommerce\includes\abstracts\abstract-wc-settings-api.php' (include_path='.:/opt/php74/share/pear') в /home/c/cd09136/wordpress_0gnxo/public_html/wp-content/plugins/Tegro Plugin/woocommerce_tegro_plugin.php на строке 20
+
+2023-07-07T20:51:29+00:00 CRITICAL require_once(): Failed opening required '/home/c/cd09136/wordpress_0gnxo/public_html/wp-content\plugins\woocommerce\includes\abstracts\abstract-wc-settings-api.php' (include_path='.:/opt/php74/share/pear') в /home/c/cd09136/wordpress_0gnxo/public_html/wp-content/plugins/Tegro Plugin/woocommerce_tegro_plugin.php на строке 20
+
+2023-07-07T20:51:30+00:00 CRITICAL require_once(): Failed opening required '/home/c/cd09136/wordpress_0gnxo/public_html/wp-content\plugins\woocommerce\includes\abstracts\abstract-wc-settings-api.php' (include_path='.:/opt/php74/share/pear') в /home/c/cd09136/wordpress_0gnxo/public_html/wp-content/plugins/Tegro Plugin/woocommerce_tegro_plugin.php на строке 20
+
+2023-07-07T20:51:30+00:00 CRITICAL require_once(): Failed opening required '/home/c/cd09136/wordpress_0gnxo/public_html/wp-content\plugins\woocommerce\includes\abstracts\abstract-wc-settings-api.php' (include_path='.:/opt/php74/share/pear') в /home/c/cd09136/wordpress_0gnxo/public_html/wp-content/plugins/Tegro Plugin/woocommerce_tegro_plugin.php на строке 20
+
